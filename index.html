@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TechLaudo — Sistema de Laudos Técnicos</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ===== PRINT AREA ===== -->
+<div id="print-area"></div>
+
+<!-- ===== TOAST ===== -->
+<div id="toast-container"></div>
+
+<!-- ===== SIDEBAR ===== -->
+<aside id="sidebar">
+  <div class="sidebar-logo">
+    <h1>TechLaudo</h1>
+    <span>Sistema Técnico v4.0</span>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-title">Menu</div>
+    <button class="nav-btn active" onclick="navigate('dashboard')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      Dashboard
+    </button>
+    <button class="nav-btn" onclick="navigate('novo-laudo')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+      Novo Laudo
+    </button>
+    <button class="nav-btn" onclick="navigate('orcamento')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      Orçamento
+    </button>
+    <button class="nav-btn" onclick="navigate('historico')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      Histórico
+    </button>
+    <div class="nav-section-title">Sistema</div>
+    <button class="nav-btn" onclick="navigate('configuracoes')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      Configurações
+    </button>
+  </nav>
+  <div class="sidebar-footer">
+    &copy; 2025 TechLaudo<br>Todos os direitos reservados
+  </div>
+</aside>
+
+<!-- ===== MAIN ===== -->
+<main id="main">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-title" id="page-title">Dashboard</div>
+    <div class="topbar-actions">
+      <button class="btn btn-primary btn-sm" onclick="navigate('novo-laudo')">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Novo Laudo
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== DASHBOARD ===== -->
+  <div class="content">
+  <div id="page-dashboard" class="page active">
+    <div class="stats-grid">
+      <div class="stat-card c1">
+        <div class="stat-label">Total Laudos</div>
+        <div class="stat-value" id="stat-total">0</div>
+        <div class="stat-sub">Todos os registros</div>
+      </div>
+      <div class="stat-card c2">
+        <div class="stat-label">Em Andamento</div>
+        <div class="stat-value" id="stat-andamento">0</div>
+        <div class="stat-sub">Aguardando aprovação</div>
+      </div>
+      <div class="stat-card c3">
+        <div class="stat-label">Concluídos</div>
+        <div class="stat-value" id="stat-concluido">0</div>
+        <div class="stat-sub">Serviços finalizados</div>
+      </div>
+      <div class="stat-card c4">
+        <div class="stat-label">Faturamento</div>
+        <div class="stat-value" id="stat-faturamento">R$0</div>
+        <div class="stat-sub">Total aprovado</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+        Laudos Recentes
+      </div>
+      <div id="dashboard-list">
+        <div class="empty-state">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          <p>Nenhum laudo cadastrado ainda.<br>Clique em <strong>Novo Laudo</strong> para começar.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== NOVO LAUDO ===== -->
+  <div id="page-novo-laudo" class="page">
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab(this,'tab-cliente')">👤 Cliente</button>
+      <button class="tab-btn" onclick="switchTab(this,'tab-equipamento')">💻 Equipamento</button>
+      <button class="tab-btn" onclick="switchTab(this,'tab-diagnostico')">🔍 Diagnóstico</button>
+      <button class="tab-btn" onclick="switchTab(this,'tab-checklist')">✅ Checklist</button>
+    </div>
+
+    <!-- TAB CLIENTE -->
+    <div id="tab-cliente" class="tab-content active">
+      <div class="card">
+        <div class="card-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Dados do Cliente
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Nome Completo *</label>
+            <input type="text" id="cli-nome" placeholder="João da Silva">
+          </div>
+          <div class="form-group">
+            <label>CPF / CNPJ</label>
+            <input type="text" id="cli-doc" placeholder="000.000.000-00">
+          </div>
+          <div class="form-group">
+            <label>Telefone *</label>
+            <input type="text" id="cli-tel" placeholder="(85) 99999-9999">
+          </div>
+          <div class="form-group">
+            <label>E-mail</label>
+            <input type="email" id="cli-email" placeholder="email@exemplo.com">
+          </div>
+          <div class="form-group full">
+            <label>Endereço</label>
+            <input type="text" id="cli-end" placeholder="Rua, número, bairro, cidade">
+          </div>
+          <div class="form-group">
+            <label>Nº do Laudo</label>
+            <input type="text" id="laudo-num" placeholder="Auto">
+          </div>
+          <div class="form-group">
+            <label>Data de Entrada</label>
+            <input type="date" id="laudo-data">
+          </div>
+          <div class="form-group">
+            <label>Previsão de Entrega</label>
+            <input type="date" id="laudo-entrega">
+          </div>
+          <div class="form-group">
+            <label>Status</label>
+            <select id="laudo-status">
+              <option value="entrada">Entrada</option>
+              <option value="diagnostico">Em Diagnóstico</option>
+              <option value="aguardando">Aguardando Aprovação</option>
+              <option value="em_reparo">Em Reparo</option>
+              <option value="concluido">Concluído</option>
+              <option value="entregue">Entregue</option>
+              <option value="cancelado">Cancelado</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB EQUIPAMENTO -->
+    <div id="tab-equipamento" class="tab-content">
+      <div class="card">
+        <div class="card-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          Identificação do Equipamento
+        </div>
+
+        <!-- BUSCA INTELIGENTE DE MODELO -->
+        <div style="background:rgba(0,229,255,0.05); border:1px solid rgba(0,229,255,0.2); border-radius:10px; padding:16px; margin-bottom:20px">
+          <div style="font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--accent); font-family:var(--mono); margin-bottom:12px; display:flex; align-items:center; gap:8px">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Busca Rápida de Modelo — Preenche specs automaticamente
+          </div>
+          <div style="position:relative">
+            <input type="text" id="eq-busca-modelo" placeholder="Digite marca ou modelo... ex: Dell Inspiron, ThinkPad, MacBook Pro..."
+              oninput="buscarModelo(this.value)" autocomplete="off"
+              style="padding-left:38px">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--text3); pointer-events:none"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </div>
+          <div id="eq-sugestoes" style="display:none; margin-top:6px; background:var(--surface); border:1px solid var(--border); border-radius:8px; overflow:hidden; max-height:260px; overflow-y:auto; box-shadow:var(--shadow)"></div>
+          <div id="eq-modelo-selecionado" style="display:none; margin-top:10px; background:rgba(0,255,157,0.05); border:1px solid rgba(0,255,157,0.2); border-radius:8px; padding:12px 14px">
+            <div style="display:flex; justify-content:space-between; align-items:center">
+              <div>
+                <span style="font-size:12px; color:var(--accent3); font-weight:600; font-family:var(--mono)" id="eq-modelo-nome-sel">—</span>
+                <span style="font-size:11px; color:var(--text3); margin-left:8px">Specs carregadas ✓</span>
+              </div>
+              <button class="btn btn-ghost btn-sm" onclick="limparModeloSelecionado()" style="padding:4px 10px; font-size:11px">✕ Limpar</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Tipo *</label>
+            <select id="eq-tipo">
+              <option>Notebook</option>
+              <option>Desktop / PC</option>
+              <option>All-in-One</option>
+              <option>Servidor</option>
+              <option>Tablet</option>
+              <option>Impressora</option>
+              <option>Outro</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Marca *</label>
+            <input type="text" id="eq-marca" placeholder="Dell, HP, Lenovo...">
+          </div>
+          <div class="form-group">
+            <label>Modelo</label>
+            <input type="text" id="eq-modelo" placeholder="Inspiron 15 3000">
+          </div>
+          <div class="form-group">
+            <label>Número de Série</label>
+            <input type="text" id="eq-serie" placeholder="SN123456789">
+          </div>
+          <div class="form-group">
+            <label>Patrimônio</label>
+            <input type="text" id="eq-pat" placeholder="PAT-001">
+          </div>
+          <div class="form-group">
+            <label>Sistema Operacional</label>
+            <select id="eq-so">
+              <option>Windows 11</option>
+              <option>Windows 10</option>
+              <option>Windows 7</option>
+              <option>Ubuntu / Linux</option>
+              <option>macOS</option>
+              <option>Sem SO</option>
+              <option>Outro</option>
+            </select>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <div class="card-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>
+          Configurações de Hardware
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Processador</label>
+            <input type="text" id="hw-cpu" placeholder="Intel Core i5-10400">
+          </div>
+          <div class="form-group">
+            <label>Memória RAM</label>
+            <input type="text" id="hw-ram" placeholder="8GB DDR4">
+          </div>
+          <div class="form-group">
+            <label>Armazenamento</label>
+            <input type="text" id="hw-hd" placeholder="SSD 256GB + HDD 1TB">
+          </div>
+          <div class="form-group">
+            <label>Placa de Vídeo</label>
+            <input type="text" id="hw-gpu" placeholder="GTX 1650 / Integrada">
+          </div>
+          <div class="form-group">
+            <label>Fonte</label>
+            <input type="text" id="hw-fonte" placeholder="450W 80Plus">
+          </div>
+          <div class="form-group">
+            <label>Placa-Mãe</label>
+            <input type="text" id="hw-mb" placeholder="ASUS ROG B450">
+          </div>
+        </div>
+        <div class="divider"></div>
+        <div class="card-title">Acessórios Recebidos</div>
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>Acessórios</label>
+            <input type="text" id="eq-acess" placeholder="Carregador, mouse, teclado, mochila...">
+          </div>
+          <div class="form-group full">
+            <label>Condição Visual do Equipamento</label>
+            <textarea id="eq-cond" placeholder="Descreva amassados, arranhões, quebras..."></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB DIAGNÓSTICO -->
+    <div id="tab-diagnostico" class="tab-content">
+      <div class="card">
+        <div class="card-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Reclamação do Cliente
+        </div>
+        <div class="form-group">
+          <label>Defeito Relatado pelo Cliente *</label>
+          <textarea id="diag-recl" placeholder="Descreva exatamente o que o cliente disse sobre o problema..." style="min-height:90px"></textarea>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          Diagnóstico Técnico
+        </div>
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>Análise / Problema Identificado *</label>
+            <textarea id="diag-analise" placeholder="Descreva o defeito encontrado pelo técnico..." style="min-height:100px"></textarea>
+          </div>
+          <div class="form-group full">
+            <label>Serviços a Realizar</label>
+            <textarea id="diag-servicos" placeholder="Liste os serviços que serão executados..." style="min-height:80px"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Causa do Problema</label>
+            <select id="diag-causa">
+              <option value="">-- Selecione --</option>
+              <option>Mau uso</option>
+              <option>Desgaste natural</option>
+              <option>Superaquecimento</option>
+              <option>Queda / Impacto</option>
+              <option>Contato com líquido</option>
+              <option>Vírus / Malware</option>
+              <option>Falha de software</option>
+              <option>Curto-circuito</option>
+              <option>Defeito de fábrica</option>
+              <option>Outro</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Grau de Urgência</label>
+            <select id="diag-urgencia">
+              <option value="normal">Normal</option>
+              <option value="urgente">Urgente</option>
+              <option value="critico">Crítico</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label>Observações Adicionais</label>
+            <textarea id="diag-obs" placeholder="Informações extras, avisos ao cliente, garantias..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Técnico Responsável</label>
+            <input type="text" id="diag-tecnico" placeholder="Nome do técnico">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB CHECKLIST -->
+    <div id="tab-checklist" class="tab-content">
+      <div class="card">
+        <div class="card-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          Checklist de Vistoria
+        </div>
+        <div class="checklist" id="checklist-items">
+          <!-- Gerado por JS -->
+        </div>
+      </div>
+      <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:12px;">
+        <button class="btn btn-primary" id="btn-salvar" onclick="salvarLaudo()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+          Salvar Laudo
+        </button>
+        <button class="btn btn-purple" onclick="gerarOrcamentoDoLaudo()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          Gerar Orçamento
+        </button>
+        <button class="btn btn-secondary" onclick="limparFormulario()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.02"/></svg>
+          Limpar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== ORÇAMENTO ===== -->
+  <div id="page-orcamento" class="page">
+    <div class="card">
+      <div class="card-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        Orçamento de Serviços e Peças
+      </div>
+
+      <div class="form-grid" style="margin-bottom:20px">
+        <div class="form-group">
+          <label>Cliente</label>
+          <input type="text" id="orc-cliente" placeholder="Nome do cliente">
+        </div>
+        <div class="form-group">
+          <label>Nº Laudo (opcional)</label>
+          <input type="text" id="orc-laudo" placeholder="L-001">
+        </div>
+        <div class="form-group">
+          <label>Data</label>
+          <input type="date" id="orc-data">
+        </div>
+        <div class="form-group">
+          <label>Validade do Orçamento</label>
+          <select id="orc-validade">
+            <option>5 dias</option>
+            <option>7 dias</option>
+            <option>10 dias</option>
+            <option>15 dias</option>
+            <option>30 dias</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="card-title" style="margin-top:0">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        Itens do Orçamento
+      </div>
+
+      <div style="display:grid; grid-template-columns:2fr 80px 120px 120px 40px; gap:10px; padding:0 16px 8px; color:var(--text3); font-size:11px; letter-spacing:1.5px; text-transform:uppercase; font-family:var(--mono)">
+        <span>DESCRIÇÃO</span><span>QTD</span><span>UNIT (R$)</span><span>TOTAL</span><span></span>
+      </div>
+
+      <div class="orcamento-items" id="orc-items">
+        <!-- Itens adicionados dinamicamente -->
+      </div>
+
+      <div style="display:flex; gap:10px; align-items:center; margin-top:12px; flex-wrap:wrap">
+        <button class="btn btn-secondary btn-sm" onclick="adicionarItem()">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Adicionar Item
+        </button>
+        <div class="catalogo-dropdown">
+          <button class="btn btn-ghost btn-sm" onclick="toggleCatalogo()" id="btn-catalogo">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h7"/></svg>
+            Catálogo de Serviços
+          </button>
+          <div class="catalogo-panel" id="catalogo-panel">
+            <div class="catalogo-search">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" placeholder="Buscar serviço..." id="catalogo-busca" oninput="filtrarCatalogo()">
+            </div>
+            <div class="catalogo-list" id="catalogo-list">
+              <!-- Gerado por JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="total-bar">
+        <div class="total-item">
+          <label>SUBTOTAL</label>
+          <span id="orc-subtotal">R$ 0,00</span>
+        </div>
+        <div class="total-item">
+          <label>DESCONTO</label>
+          <div style="display:flex; align-items:center; gap:6px">
+            <input type="number" id="orc-desconto" value="0" min="0" style="width:70px; padding:4px 8px; font-size:13px" oninput="calcularTotal()">
+            <select id="orc-desc-tipo" style="width:55px; padding:4px 6px; font-size:12px" onchange="calcularTotal()">
+              <option value="pct">%</option>
+              <option value="val">R$</option>
+            </select>
+          </div>
+        </div>
+        <div class="total-item grand">
+          <label>TOTAL</label>
+          <span id="orc-total">R$ 0,00</span>
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-top:16px">
+        <label>Condições de Pagamento</label>
+        <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:4px" id="pgto-opcoes">
+          <label class="pgto-btn" data-val="PIX">
+            <input type="radio" name="orc-pgto" value="PIX" style="display:none">
+            <span>💠 PIX</span>
+          </label>
+          <label class="pgto-btn" data-val="Cartão de Crédito">
+            <input type="radio" name="orc-pgto" value="Cartão de Crédito" style="display:none">
+            <span>💳 Crédito</span>
+          </label>
+          <label class="pgto-btn" data-val="Cartão de Débito">
+            <input type="radio" name="orc-pgto" value="Cartão de Débito" style="display:none">
+            <span>🏧 Débito</span>
+          </label>
+          <label class="pgto-btn" data-val="50% Entrada + 50% Entrega">
+            <input type="radio" name="orc-pgto" value="50% Entrada + 50% Entrega" style="display:none">
+            <span>✂️ 50% + 50%</span>
+          </label>
+          <label class="pgto-btn" data-val="Dinheiro">
+            <input type="radio" name="orc-pgto" value="Dinheiro" style="display:none">
+            <span>💵 Dinheiro</span>
+          </label>
+          <label class="pgto-btn" data-val="2x sem juros">
+            <input type="radio" name="orc-pgto" value="2x sem juros" style="display:none">
+            <span>🔢 2x s/ juros</span>
+          </label>
+          <label class="pgto-btn" data-val="3x sem juros">
+            <input type="radio" name="orc-pgto" value="3x sem juros" style="display:none">
+            <span>🔢 3x s/ juros</span>
+          </label>
+          <label class="pgto-btn" data-val="Outro">
+            <input type="radio" name="orc-pgto" value="Outro" style="display:none">
+            <span>📋 Outro</span>
+          </label>
+        </div>
+        <input type="hidden" id="orc-pgto" value="PIX">
+      </div>
+      <div class="form-group" style="margin-top:12px">
+        <label>Observações do Orçamento</label>
+        <textarea id="orc-obs" placeholder="Garantia, prazo, condições especiais..."></textarea>
+      </div>
+
+      <div style="display:flex; gap:12px; margin-top:20px; flex-wrap:wrap">
+        <button class="btn btn-green" onclick="imprimirOrcamento()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Imprimir / PDF
+        </button>
+        <button class="btn btn-primary" onclick="salvarOrcamento()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/></svg>
+          Salvar
+        </button>
+        <button class="btn btn-secondary" onclick="limparOrcamento()">Limpar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== HISTÓRICO ===== -->
+  <div id="page-historico" class="page">
+    <div style="display:flex; gap:12px; align-items:center; margin-bottom:20px; flex-wrap:wrap">
+      <div class="search-bar">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" placeholder="Buscar por cliente, nº laudo..." id="hist-busca" oninput="filtrarHistorico()">
+      </div>
+      <select id="hist-filtro-status" style="width:180px;" onchange="filtrarHistorico()">
+        <option value="">Todos os status</option>
+        <option value="entrada">Entrada</option>
+        <option value="diagnostico">Em Diagnóstico</option>
+        <option value="aguardando">Aguardando Aprovação</option>
+        <option value="em_reparo">Em Reparo</option>
+        <option value="concluido">Concluído</option>
+        <option value="entregue">Entregue</option>
+        <option value="cancelado">Cancelado</option>
+      </select>
+      <button class="btn btn-danger btn-sm" onclick="limparHistorico()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+        Limpar Tudo
+      </button>
+    </div>
+    <div id="historico-list">
+      <div class="empty-state">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        <p>Nenhum registro encontrado.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== CONFIGURAÇÕES ===== -->
+  <div id="page-configuracoes" class="page">
+    <div class="card">
+      <div class="card-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+        Dados da Empresa
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Nome da Empresa</label>
+          <input type="text" id="cfg-empresa" placeholder="TechSoluções Informática">
+        </div>
+        <div class="form-group">
+          <label>CNPJ / CPF</label>
+          <input type="text" id="cfg-cnpj" placeholder="00.000.000/0001-00">
+        </div>
+        <div class="form-group">
+          <label>Telefone</label>
+          <input type="text" id="cfg-tel" placeholder="(85) 99999-9999">
+        </div>
+        <div class="form-group">
+          <label>E-mail</label>
+          <input type="text" id="cfg-email" placeholder="contato@empresa.com">
+        </div>
+        <div class="form-group full">
+          <label>Endereço</label>
+          <input type="text" id="cfg-end" placeholder="Rua, número, bairro, cidade - Estado">
+        </div>
+        <div class="form-group">
+          <label>Técnico Padrão</label>
+          <input type="text" id="cfg-tecnico" placeholder="Nome do técnico">
+        </div>
+        <div class="form-group">
+          <label>Garantia Padrão (dias)</label>
+          <input type="number" id="cfg-garantia" value="90" min="0">
+        </div>
+        <div class="form-group full">
+          <label>Texto de Rodapé / Aviso Legal</label>
+          <textarea id="cfg-rodape" placeholder="Ex: Garantia não cobre danos físicos causados pelo cliente..."></textarea>
+        </div>
+      </div>
+      <div style="margin-top:20px">
+        <button class="btn btn-primary" onclick="salvarConfigs()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/></svg>
+          Salvar Configurações
+        </button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/></svg>
+        Itens do Checklist
+      </div>
+      <p style="font-size:13px; color:var(--text2); margin-bottom:16px">Personalize os itens verificados durante a vistoria do equipamento.</p>
+      <div id="cfg-checklist-items" style="display:flex; flex-direction:column; gap:8px; margin-bottom:12px"></div>
+      <button class="btn btn-secondary btn-sm" onclick="adicionarChecklistItem()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Adicionar Item
+      </button>
+      <div style="margin-top:16px">
+        <button class="btn btn-primary btn-sm" onclick="salvarChecklist()">Salvar Checklist</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        Catálogo de Equipamentos
+      </div>
+      <p style="font-size:13px; color:var(--text2); margin-bottom:16px">Cadastre marcas e modelos com suas especificações. Eles aparecerão como sugestão ao criar laudos, preenchendo os campos automaticamente.</p>
+      <div id="cfg-equip-list" style="display:flex; flex-direction:column; gap:8px; margin-bottom:12px">
+        <!-- gerado por JS -->
+      </div>
+      <button class="btn btn-secondary btn-sm" onclick="abrirModalNovoEquip()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Adicionar Equipamento
+      </button>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        Preços do Catálogo de Serviços
+      </div>
+      <p style="font-size:13px; color:var(--text2); margin-bottom:16px">Defina o valor de cada serviço. Esses valores serão usados automaticamente ao adicionar itens pelo catálogo no orçamento.</p>
+      <div id="cfg-catalogo-precos" style="display:flex; flex-direction:column; gap:6px; margin-bottom:16px">
+        <!-- Gerado por JS -->
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="salvarPrecosCatalogo()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/></svg>
+        Salvar Preços
+      </button>
+    </div>
+
+    <div class="card">
+      <div style="display:flex; gap:12px; flex-wrap:wrap">
+        <button class="btn btn-secondary" onclick="exportarDados()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Exportar Dados (JSON)
+        </button>
+        <label class="btn btn-secondary" style="cursor:pointer">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Importar Dados (JSON)
+          <input type="file" accept=".json" style="display:none" onchange="importarDados(event)">
+        </label>
+      </div>
+    </div>
+  </div>
+
+  </div><!-- /content -->
+</main>
+
+<!-- ===== MODAL NOVO EQUIPAMENTO ===== -->
+<div class="modal-overlay" id="modal-equip">
+  <div class="modal" style="max-width:680px">
+    <h2 id="modal-equip-titulo">➕ Novo Equipamento no Catálogo</h2>
+    <input type="hidden" id="modal-equip-idx" value="">
+    <div class="form-grid" style="margin-bottom:16px">
+      <div class="form-group">
+        <label>Tipo *</label>
+        <select id="meq-tipo">
+          <option>Notebook</option><option>Desktop / PC</option><option>All-in-One</option>
+          <option>Servidor</option><option>Tablet</option><option>Impressora</option><option>Outro</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Marca *</label>
+        <input type="text" id="meq-marca" placeholder="Dell, HP, Lenovo...">
+      </div>
+      <div class="form-group">
+        <label>Modelo *</label>
+        <input type="text" id="meq-modelo" placeholder="Inspiron 15 3520">
+      </div>
+      <div class="form-group">
+        <label>Sistema Operacional</label>
+        <select id="meq-so">
+          <option>Windows 11</option><option>Windows 10</option><option>Windows 7</option>
+          <option>Ubuntu / Linux</option><option>macOS</option><option>Sem SO</option><option>Outro</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Processador</label>
+        <input type="text" id="meq-cpu" placeholder="Intel Core i5-1235U">
+      </div>
+      <div class="form-group">
+        <label>Memória RAM</label>
+        <input type="text" id="meq-ram" placeholder="8GB DDR4 3200MHz">
+      </div>
+      <div class="form-group">
+        <label>Armazenamento</label>
+        <input type="text" id="meq-hd" placeholder="SSD NVMe 512GB">
+      </div>
+      <div class="form-group">
+        <label>Placa de Vídeo</label>
+        <input type="text" id="meq-gpu" placeholder="Intel Iris Xe / GTX 1650">
+      </div>
+      <div class="form-group">
+        <label>Fonte / Bateria</label>
+        <input type="text" id="meq-fonte" placeholder="65W / Bateria 41Wh">
+      </div>
+      <div class="form-group">
+        <label>Placa-Mãe / Chipset</label>
+        <input type="text" id="meq-mb" placeholder="Intel H670 / B660">
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="fecharModalEquip()">Cancelar</button>
+      <button class="btn btn-primary" onclick="salvarEquipCatalogo()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/></svg>
+        Salvar
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-detalhes">
+  <div class="modal" style="max-width:760px">
+    <h2>📋 Detalhes do Laudo</h2>
+    <div id="modal-content"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="fecharModal()">Fechar</button>
+      <button class="btn btn-secondary" onclick="editarLaudoAtivo()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Editar
+      </button>
+      <button class="btn btn-green" onclick="imprimirLaudoAtivo()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Imprimir
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SCRIPTS ===== -->
+<script src="js/data.js"></script>
+<script src="js/core.js"></script>
+<script src="js/catalogo.js"></script>
+<script src="js/orcamento.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/historico.js"></script>
+<script src="js/configuracoes.js"></script>
+<script src="js/utils.js"></script>
+
+</body>
+</html>
