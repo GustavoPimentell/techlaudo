@@ -1,0 +1,190 @@
+/* ===== PAGAMENTO BUTTONS ===== */
+.pgto-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text2);
+  transition: all .2s;
+  user-select: none;
+  min-height: 44px;
+  -webkit-tap-highlight-color: transparent;
+}
+.pgto-btn:hover { border-color: var(--accent); color: var(--text); }
+.pgto-btn:active { background: var(--surface3); }
+.pgto-btn.selected {
+  background: rgba(0,229,255,0.12);
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* ===== NAV TABS NEXT/PREV ===== */
+.tab-nav-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  gap: 12px;
+}
+.tab-progress { display: flex; gap: 6px; align-items: center; }
+.tab-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: all .2s;
+}
+.tab-dot.active { background: var(--accent); width: 20px; border-radius: 4px; }
+.tab-dot.done   { background: var(--accent3); }
+
+/* ===== CLIENT AUTOCOMPLETE ===== */
+.autocomplete-wrap { position: relative; }
+.autocomplete-list {
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0; right: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  z-index: 300;
+  max-height: 220px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  box-shadow: var(--shadow);
+}
+.autocomplete-list.open { display: block; animation: fadeIn .15s ease; }
+.autocomplete-item {
+  padding: 12px 14px;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(42,48,80,0.4);
+  transition: background .15s;
+  min-height: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+}
+.autocomplete-item:last-child { border-bottom: none; }
+.autocomplete-item:hover, .autocomplete-item:active { background: var(--surface2); }
+.autocomplete-item-name   { font-size: 13px; color: var(--text); font-weight: 500; }
+.autocomplete-item-detail { font-size: 11px; color: var(--text3); margin-top: 2px; }
+
+/* ===== CATÁLOGO DE SERVIÇOS ===== */
+.catalogo-dropdown { position: relative; display: inline-block; }
+.catalogo-panel {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 200;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px;
+  min-width: 320px;
+  box-shadow: var(--shadow);
+  animation: fadeIn .15s ease;
+}
+.catalogo-panel.open { display: block; }
+.catalogo-search { margin-bottom: 8px; position: relative; }
+.catalogo-search input { padding: 8px 12px 8px 34px; font-size: 14px; background: var(--surface2); }
+.catalogo-search svg {
+  position: absolute; left: 10px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--text3); pointer-events: none;
+}
+.catalogo-category {
+  font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--text3); font-family: var(--mono); padding: 8px 6px 4px;
+}
+.catalogo-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 10px; border-radius: 6px; cursor: pointer; transition: background .15s;
+  min-height: 48px; -webkit-tap-highlight-color: transparent;
+}
+.catalogo-item:hover, .catalogo-item:active { background: var(--surface2); }
+.catalogo-item-info { flex: 1; }
+.catalogo-item-name  { font-size: 13px; color: var(--text); }
+.catalogo-item-price { font-size: 11px; color: var(--text3); margin-top: 2px; }
+.catalogo-item-add {
+  background: rgba(0,229,255,0.1);
+  border: 1px solid rgba(0,229,255,0.2);
+  color: var(--accent);
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-size: 11px; font-weight: 700;
+  cursor: pointer; font-family: var(--mono);
+  transition: background .15s;
+  min-height: 36px;
+  -webkit-tap-highlight-color: transparent;
+}
+.catalogo-item-add:hover, .catalogo-item-add:active { background: rgba(0,229,255,0.2); }
+.catalogo-list { max-height: 260px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.catalogo-list::-webkit-scrollbar { width: 4px; }
+.catalogo-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+/* On mobile, catalogo panel is full width */
+@media (max-width: 600px) {
+  .catalogo-panel {
+    position: fixed;
+    left: 12px; right: 12px; bottom: calc(var(--bottomnav-h) + var(--safe-bottom) + 12px);
+    top: auto;
+    min-width: unset;
+    max-height: 60vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 12px;
+    z-index: 500;
+  }
+}
+
+/* ===== HISTORY ITEMS ===== */
+.history-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  background: var(--surface2);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: border-color .2s;
+  min-height: 64px;
+  -webkit-tap-highlight-color: transparent;
+}
+.history-item:hover, .history-item:active { border-color: var(--accent); }
+.history-item-icon {
+  width: 40px; height: 40px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-size: 18px;
+}
+.history-item-info { flex: 1; min-width: 0; }
+.history-item-info h4 { font-size: 14px; font-weight: 600; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.history-item-info p  { font-size: 12px; color: var(--text3); }
+.history-item-value { font-family: var(--mono); font-size: 14px; color: var(--accent3); font-weight: 700; flex-shrink: 0; }
+
+@media (max-width: 480px) {
+  .history-item { flex-wrap: wrap; gap: 8px; }
+  .history-item-value { width: 100%; text-align: right; font-size: 13px; }
+}
+
+/* ===== HISTORICO FILTERS ===== */
+@media (max-width: 600px) {
+  #hist-filtros-laudos,
+  #hist-filtros-orcamentos {
+    flex-direction: column;
+    align-items: stretch !important;
+  }
+  #hist-filtro-status { width: 100% !important; }
+  .search-bar { width: 100%; }
+}

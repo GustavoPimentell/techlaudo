@@ -1,0 +1,119 @@
+/* ===== MAIN ===== */
+#main {
+  margin-left: var(--sidebar-w);
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== TOPBAR ===== */
+.topbar {
+  background: rgba(20,23,32,0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.topbar-title { font-size: 20px; font-weight: 600; }
+.topbar-title span { color: var(--accent); }
+.topbar-actions { display: flex; gap: 10px; align-items: center; }
+
+/* Hamburger button — hidden on desktop */
+.topbar-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text2);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  transition: color .2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.topbar-menu-btn:active { color: var(--accent); }
+
+/* Sidebar overlay — mobile only */
+#sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 99;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+#sidebar-overlay.open { display: block; }
+
+/* ===== BOTTOM NAV (mobile only) ===== */
+#bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: calc(var(--bottomnav-h) + var(--safe-bottom));
+  padding-bottom: var(--safe-bottom);
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  z-index: 100;
+  align-items: stretch;
+  justify-content: space-around;
+}
+
+.bottom-nav-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  color: var(--text3);
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color .2s;
+  padding: 8px 4px;
+  letter-spacing: .3px;
+  -webkit-tap-highlight-color: transparent;
+}
+.bottom-nav-btn svg { flex-shrink: 0; }
+.bottom-nav-btn.active {
+  color: var(--accent);
+}
+.bottom-nav-btn.active svg { opacity: 1; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  #sidebar {
+    transform: translateX(-100%);
+    z-index: 100;
+  }
+  #sidebar.open {
+    transform: translateX(0);
+    box-shadow: 4px 0 32px rgba(0,0,0,0.6);
+  }
+  #main {
+    margin-left: 0;
+    padding-bottom: calc(var(--bottomnav-h) + var(--safe-bottom));
+  }
+  .topbar {
+    padding: 12px 16px;
+  }
+  .topbar-menu-btn { display: flex; }
+  #bottom-nav { display: flex; }
+  /* Hide desktop new laudo btn in topbar on mobile — accessible via bottom nav */
+  .topbar-actions .btn { display: none; }
+}
+
+@media (max-width: 600px) {
+  .topbar-title { font-size: 16px; }
+}
